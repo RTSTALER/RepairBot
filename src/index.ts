@@ -8,12 +8,12 @@ const port = 3000;
 app.use(bodyParser.json());
 
 app.post( "/", ( req, res ) => {
-  if(!req.body.number) {
+  if(!req.body.number || !req.body.name) {
     res.sendStatus(400);
     return;
   }
   console.log(req.body.number);
-  sendMessage(req.body.number);
+  sendMessage(req.body.name + ':' + req.body.number);
   res.sendStatus(200);
 } );
 
@@ -21,9 +21,3 @@ app.post( "/", ( req, res ) => {
 app.listen( port, () => {
   console.log(`server started at http://localhost:${ port }` );
 } );
-
-// Steam
-// zqxwcevrbtnymu,i.o/p1
-
-// Qiwi
-//za1xs2cd3vbf4bg6nh6
