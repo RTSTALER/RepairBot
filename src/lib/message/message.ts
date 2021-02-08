@@ -3,11 +3,17 @@ import { Chat } from 'telegraf/typings/telegram-types';
 import {chatList } from '../chatList'
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 // tslint:disable: no-expression-statement
-// const bot = new Telegraf('1509757090:AAHfxGHqCYjN6U-SVQsK3KrsjSbtV3Jowhg');
-const bot = new Telegraf('1686393338:AAEiw2CnOWk6kz7e_WvuYxiI0_i9_2AR-vs');
+const token = readFileSync(process.cwd() + '/token.env').toString();
+if(!token) {
+  throw new Error('Bot token is required');
+}
+const bot = new Telegraf(token);
 bot.start(ctx => AddChatId(ctx.getChat()));
 export const sendMessage = async (text: string) => {
   let chats = GetChatList();
+  if(!chats) {
+    return;
+  }
   await chats.chats.forEach(chat => {
     bot.telegram.sendMessage(chat, text).catch( ex => {console.log(ex)});
   });
@@ -28,6 +34,7 @@ export const AddChatId = async (chat: Promise<Chat>) => {
 
   }
   writeFileSync(process.cwd() + '/chatList.json', JSON.stringify(chats));
+  console.log(`Add chatId ${(await chat).id.toString()}`);
 };
 
 export const GetChatList = (): chatList => {
