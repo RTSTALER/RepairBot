@@ -9,10 +9,11 @@ app.use(bodyParser.json());
 
 app.post( "/", ( req, res ) => {
   if(!req.body.number || !req.body.name) {
+    console.log(req.body);
     res.sendStatus(400);
     return;
   }
-  console.log(req.body.number);
+  console.log(req.body.name + ':' + req.body.number);
   sendMessage(req.body.name + ':' + req.body.number);
   res.sendStatus(200);
 } );
